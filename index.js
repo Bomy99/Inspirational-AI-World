@@ -405,7 +405,12 @@ const initializedIPs = new Set();
 
 // Add middleware to check IP and initialize coins
 app.use((req, res, next) => {
-    const clientIP = req.ip || req.connection.remoteAddress;
+    // Get IP from various possible headers
+    const clientIP = req.headers['x-forwarded-for'] || 
+                    req.headers['x-real-ip'] || 
+                    req.connection.remoteAddress || 
+                    req.ip;
+    console.log('Client IP:', clientIP); // Add this to debug
     res.locals.clientIP = clientIP;
     next();
 });
@@ -416,10 +421,12 @@ const UNLIMITED_COINS_IP = '84.198.45.36'; // Your IP address
 // Modify the initialization endpoint
 app.post('/api/initialize-coins', async (req, res) => {
     const clientIP = res.locals.clientIP;
+    console.log('Checking IP:', clientIP, 'Against:', UNLIMITED_COINS_IP); // Debug log
     
-    // Check if it's your IP
-    if (clientIP === UNLIMITED_COINS_IP) {
-        res.json({ coins: 999999 }); // Unlimited coins for your IP
+    // Check if the IP contains our target IP (to handle proxy prefixes)
+    if (clientIP && clientIP.includes(UNLIMITED_COINS_IP)) {
+        console.log('Unlimited coins granted!'); // Debug log
+        res.json({ coins: 999999 });
         return;
     }
 
