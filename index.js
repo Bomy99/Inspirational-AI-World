@@ -423,10 +423,10 @@ app.post('/api/initialize-coins', async (req, res) => {
     const clientIP = res.locals.clientIP;
     console.log('Checking IP:', clientIP, 'Against:', UNLIMITED_COINS_IP); // Debug log
     
-    // Check if the IP contains our target IP (to handle proxy prefixes)
+    // Check if it's your IP
     if (clientIP && clientIP.includes(UNLIMITED_COINS_IP)) {
-        console.log('Unlimited coins granted!'); // Debug log
-        res.json({ coins: 999999 });
+        console.log('10 coins granted!'); // Debug log
+        res.json({ coins: 10 });
         return;
     }
 
