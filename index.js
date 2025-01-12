@@ -410,9 +410,20 @@ app.use((req, res, next) => {
     next();
 });
 
-// Add endpoint to check and initialize coins for new users
+// Add your IP address at the top of the file
+const UNLIMITED_COINS_IP = '84.198.45.36'; // Your IP address
+
+// Modify the initialization endpoint
 app.post('/api/initialize-coins', async (req, res) => {
     const clientIP = res.locals.clientIP;
+    
+    // Check if it's your IP
+    if (clientIP === UNLIMITED_COINS_IP) {
+        res.json({ coins: 999999 }); // Unlimited coins for your IP
+        return;
+    }
+
+    // Normal logic for other IPs
     if (!initializedIPs.has(clientIP)) {
         initializedIPs.add(clientIP);
         res.json({ coins: 1 });

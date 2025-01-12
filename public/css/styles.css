@@ -56,4 +56,65 @@ h1 {
 .quote-card p {
     font-size: 1.1rem;
     line-height: 1.6;
+}
+
+.coffee-section {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    scale: 0.85;
+}
+
+.qr-code-section {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    text-align: center;
+    scale: 0.8;
+}
+
+.qr-code-section img {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+}
+
+.coffee-option {
+    transform: scale(0.9);
+}
+
+.coins-display {
+    font-size: 1rem;
+    padding: 6px 12px;
+}
+
+@media (max-width: 768px) {
+    .coffee-section {
+        bottom: 10px;
+        width: 85%;
+        max-width: 350px;
+    }
+    .qr-code-section {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 150px;
+    }
 } 
