@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+error.log
+combined.log
+
+# Dependencies
+node_modules/
+
+# Generated files
+public/generated/
+public/images/bmc-qr.png
+
+# OS files
+.DS_Store
+Thumbs.db

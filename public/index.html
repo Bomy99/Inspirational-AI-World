@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Inspiration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .inspiration-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            height: fit-content;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2d3436;
+            text-align: center;
+            width: 100%;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #FF6B6B, #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 32px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            align-self: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(45deg, #ff8e8e, #FF6B6B);
+        }
+
+        .generate-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+        }
+
+        .generate-button:disabled {
+            background: linear-gradient(135deg, #d1d1d1, #e0e0e0);
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        .quote-display {
+            min-height: 100px;
+            font-size: 1.2rem;
+            color: #2d3436;
+            line-height: 1.5;
+            text-align: left;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+            margin-bottom: 10px;
+        }
+
+        .quote-display.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-display {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s, transform 0.5s;
+            max-height: min(400px, 50vh);
+        }
+
+        .image-display.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 107, 107, 0.1);
+            border-top: 3px solid #FF6B6B;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 10px 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1200px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .inspiration-column {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .quote-display {
+                font-size: 1rem;
+            }
+
+            .image-display {
+                height: 300px;
+            }
+        }
+
+        .queue-status {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .download-button {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(67, 206, 162, 0.3);
+            display: none;  /* Hidden by default */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 206, 162, 0.5);
+            background: linear-gradient(135deg, #185a9d, #43cea2);
+        }
+
+        .download-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 15px rgba(67, 206, 162, 0.2);
+        }
+
+        .download-button.visible {
+            display: block;
+        }
+
+        .cooldown-status {
+            background: rgba(255, 107, 107, 0.1);
+            color: #FF6B6B;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .coffee-section {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .qr-code-section {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .qr-code-section img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+        }
+
+        .qr-code-section p {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .coffee-section {
+                bottom: 20px;
+                width: 90%;
+                max-width: 400px;
+            }
+            .qr-code-section {
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+                max-width: 200px;
+            }
+        }
+
+        .coins-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3436;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 15px;
+            border-radius: 50px;
+        }
+
+        .coffee-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .coffee-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .coffee-option span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-close {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            background: #FF6B6B;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-subtitle {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .twitter-link {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            text-decoration: none;
+            color: #1DA1F2;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .twitter-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(29, 161, 242, 0.2);
+        }
+
+        .twitter-link svg {
+            width: 20px;
+            height: 20px;
+            fill: #1DA1F2;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Column 1 - Nature Inspiration -->
+        <div class="inspiration-column">
+            <h1>✨ Inspirational</h1>
+            <button class="generate-button">Generate ✨</button>
+            <div class="loading-spinner"></div>
+            <div class="content-wrapper">
+                <div class="quote-display"></div>
+                <img class="image-display" alt="Inspirational Image">
+                <button class="download-button">⬇️ Download Image</button>
+            </div>
+        </div>
+
+        <!-- Column 2 - Cat Inspiration -->
+        <div class="inspiration-column">
+            <h1>🐱 Cat</h1>
+            <button class="generate-button">Generate 🐱</button>
+            <div class="loading-spinner"></div>
+            <div class="content-wrapper">
+                <div class="quote-display"></div>
+                <img class="image-display" alt="Cat Inspiration Image">
+                <button class="download-button">⬇️ Download Image</button>
+            </div>
+        </div>
+
+        <!-- Column 3 - Surprise Me -->
+        <div class="inspiration-column">
+            <h1>🎲 Surprise Me!</h1>
+            <button class="generate-button">Generate 🎲</button>
+            <div class="loading-spinner"></div>
+            <div class="content-wrapper">
+                <div class="quote-display"></div>
+                <img class="image-display" alt="Surprise Inspiration Image">
+                <button class="download-button">⬇️ Download Image</button>
+            </div>
+        </div>
+    </div>
+    <div class="coffee-section">
+        <div class="coins-display">
+            <span class="coin-count">0</span>
+            <span class="coin-icon">🪙</span>
+        </div>
+        <div class="coffee-buttons">
+            <div class="coffee-option">
+                <span>Small Coffee (4 coins)</span>
+                <button onclick="handlePaymentClick(1)" class="bmc-button">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=1€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
+                </button>
+            </div>
+            <div class="coffee-option">
+                <span>Medium Coffee (15 coins)</span>
+                <button onclick="handlePaymentClick(3)" class="bmc-button">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=3€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
+                </button>
+            </div>
+            <div class="coffee-option">
+                <span>Big Coffee (30 coins)</span>
+                <button onclick="handlePaymentClick(5)" class="bmc-button">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=5€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="qr-code-section">
+        <img src="/images/bmc-qr.png" alt="Buy Me a Coffee QR Code">
+        <p>Scan to Support</p>
+    </div>
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h2>Need More Coins! ✨</h2>
+            <p>Each generation costs 1 coin. Support the project by buying me a coffee and get more coins!</p>
+            <p class="modal-subtitle">Small Coffee (1€) = 4 generations<br>
+               Medium Coffee (3€) = 15 generations<br>
+               Big Coffee (5€) = 30 generations</p>
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+    <a href="https://x.com/crypo99" target="_blank" class="twitter-link">
+        <svg viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        @crypo99
+    </a>
+    <script src="/js/main.js"></script>
+</body>
+</html> 
