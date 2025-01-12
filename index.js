@@ -32,8 +32,8 @@ const openai = new OpenAI({
 });
 
 // Serve static files from the correct directory
-app.use(express.static(path.join(__dirname, 'inspirational-ai-world-main', 'public')));
-app.use('/generated', express.static(path.join(__dirname, 'inspirational-ai-world-main', 'public', 'generated')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/generated', express.static(path.join(__dirname, 'public', 'generated')));
 app.use(express.json());
 
 // Add this middleware to properly serve static files with correct content type
@@ -45,8 +45,11 @@ app.use('/generated', (req, res, next) => {
 });
 
 // Serve the main page
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'inspirational-ai-world-main', 'public', 'index.html'));
+    res.render('index', { quotes: [] });  // Pass any data your template needs
 });
 
 // Add these prompt configurations at the top of your file
