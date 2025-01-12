@@ -47,7 +47,27 @@ async function checkInitialCoins() {
     }
 }
 
+function loadSavedState() {
+    document.querySelectorAll('.inspiration-column').forEach((column, index) => {
+        const savedState = JSON.parse(localStorage.getItem(`column_${index}`));
+        if (savedState) {
+            const quoteDisplay = column.querySelector('.quote-display');
+            const imageDisplay = column.querySelector('.image-display');
+            const downloadButton = column.querySelector('.download-button');
+
+            quoteDisplay.textContent = savedState.quote;
+            quoteDisplay.classList.add('visible');
+            
+            imageDisplay.src = savedState.imagePath;
+            imageDisplay.style.display = 'block';
+            imageDisplay.classList.add('visible');
+            downloadButton.classList.add('visible');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    loadSavedState();
     checkInitialCoins();
     const columns = document.querySelectorAll('.inspiration-column');
     const types = ['nature', 'cat', 'surprise'];
@@ -164,18 +184,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     }));
 
                     quoteDisplay.textContent = data.quote;
-                    setTimeout(() => quoteDisplay.classList.add('visible'), 100);
+                    quoteDisplay.classList.add('visible');
                     
                     const newImage = new Image();
                     newImage.onload = () => {
                         imageDisplay.src = data.imagePath;
                         imageDisplay.style.display = 'block';
-                        setTimeout(() => {
-                            imageDisplay.classList.add('visible');
-                            downloadButton.classList.add('visible');
-                            // Start cooldown after successful generation
-                            startCooldown();
-                        }, 100);
+                        imageDisplay.classList.add('visible');
+                        downloadButton.classList.add('visible');
+                        startCooldown();
+                    };
+                    newImage.onerror = () => {
+                        console.error('Failed to load image:', data.imagePath);
+                        quoteDisplay.textContent = 'Error loading image. Please try again.';
                     };
                     newImage.src = data.imagePath;
                 }
