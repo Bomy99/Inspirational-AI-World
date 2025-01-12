@@ -65,16 +65,16 @@ h1 {
     left: 50%;
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.9);
-    padding: 10px;
-    border-radius: 15px;
+    padding: 8px;
+    border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     z-index: 1000;
-    scale: 0.85;
+    scale: 0.75;
 }
 
 .qr-code-section {
@@ -82,34 +82,34 @@ h1 {
     bottom: 10px;
     right: 10px;
     background: rgba(255, 255, 255, 0.9);
-    padding: 8px;
-    border-radius: 12px;
+    padding: 6px;
+    border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     z-index: 1000;
     text-align: center;
-    scale: 0.7;
+    scale: 0.6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
 }
 
 .qr-code-section img {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
     display: block;
 }
 
 .qr-code-section p {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin: 0;
     color: #333;
 }
 
 .coffee-option {
-    transform: scale(0.9);
+    transform: scale(0.85);
 }
 
 .coins-display {
@@ -120,12 +120,12 @@ h1 {
 @media (max-width: 768px) {
     .coffee-section {
         bottom: 10px;
-        width: 85%;
-        max-width: 350px;
+        width: 80%;
+        max-width: 300px;
     }
     .qr-code-section {
-        bottom: 80px;
-        right: 10px;
+        bottom: 85px;
+        right: 5px;
         transform: none;
         width: auto;
         max-width: none;

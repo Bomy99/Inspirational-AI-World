@@ -189,6 +189,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadingSpinner.style.display = 'none';
             }
         });
+
+        // Update image loading error handling
+        imageDisplay.onerror = function() {
+            console.error('Failed to load image:', this.src);
+            this.style.display = 'none';
+            quoteDisplay.textContent = 'Error loading image. Please try again.';
+        };
     });
 
     updateButtonStates();

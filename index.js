@@ -32,9 +32,9 @@ const openai = new OpenAI({
 });
 
 // Serve static files from the correct directory
-app.use(express.static('public'));
-app.use('/generated', express.static('public/generated'));
-app.use('/images', express.static('public/images'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/generated', express.static(path.join(__dirname, 'public', 'generated')));
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 app.use(express.json());
 
 // Add this middleware to properly serve static files with correct content type
@@ -110,18 +110,19 @@ generateQueue.on('task_finish', () => {
 // Add this function to check and create required directories
 async function ensureDirectories() {
     const dirs = [
-        'public',
-        'public/generated',
-        'public/images',
-        'public/js',
-        'public/css'
+        path.join(__dirname, 'public'),
+        path.join(__dirname, 'public', 'generated'),
+        path.join(__dirname, 'public', 'images'),
+        path.join(__dirname, 'public', 'js'),
+        path.join(__dirname, 'public', 'css')
     ];
 
     for (const dir of dirs) {
         try {
             await fs.mkdir(dir, { recursive: true });
+            console.log(`Directory ensured: ${dir}`);
         } catch (err) {
-            console.log(`Directory ${dir} already exists or error:`, err);
+            console.error(`Error creating directory ${dir}:`, err);
         }
     }
 }
@@ -240,8 +241,8 @@ async function processGenerateRequest(req, res) {
         const axiosResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
         const imageBuffer = Buffer.from(axiosResponse.data);
 
-        // Save image with proper PNG encoding and ensure directory exists
-        const generatedDir = path.join(__dirname, 'inspirational-ai-world-main', 'public', 'generated');
+        // Update image saving path
+        const generatedDir = path.join(__dirname, 'public', 'generated');
         await fs.mkdir(generatedDir, { recursive: true });
         
         const timestamp = Date.now();
@@ -249,9 +250,16 @@ async function processGenerateRequest(req, res) {
         const filename = `${timestamp}-${uniqueId}.jpg`;
         const imagePath = path.join(generatedDir, filename);
         
-        await sharp(imageBuffer)
-            .jpeg({ quality: 90 })
-            .toFile(imagePath);
+        // Save image with proper error handling
+        try {
+            await sharp(imageBuffer)
+                .jpeg({ quality: 90 })
+                .toFile(imagePath);
+            console.log('Image saved successfully at:', imagePath);
+        } catch (error) {
+            console.error('Error saving image:', error);
+            throw error;
+        }
 
         // Update archive logic to handle concurrent access
         if (req.body.previousImage) {
@@ -278,6 +286,7 @@ async function processGenerateRequest(req, res) {
         };
 
     } catch (error) {
+        console.error('Error in processGenerateRequest:', error);
         throw error;
     }
 }
