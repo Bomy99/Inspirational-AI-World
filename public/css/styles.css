@@ -61,44 +61,44 @@ h1 {
 
 .coffee-section {
     position: fixed;
-    bottom: 10px;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    padding: 8px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    z-index: 1000;
-    scale: 0.75;
-}
-
-.qr-code-section {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
     background: rgba(255, 255, 255, 0.9);
     padding: 6px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    z-index: 1000;
-    text-align: center;
-    scale: 0.6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
+    z-index: 1000;
+    scale: 0.65;
+}
+
+.qr-code-section {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    text-align: center;
+    scale: 0.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
 }
 
 .qr-code-section img {
-    width: 70px;
-    height: 70px;
-    border-radius: 6px;
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
     display: block;
 }
 
@@ -109,7 +109,7 @@ h1 {
 }
 
 .coffee-option {
-    transform: scale(0.85);
+    transform: scale(0.8);
 }
 
 .coins-display {
@@ -119,12 +119,12 @@ h1 {
 
 @media (max-width: 768px) {
     .coffee-section {
-        bottom: 10px;
-        width: 80%;
-        max-width: 300px;
+        bottom: 5px;
+        width: 75%;
+        max-width: 250px;
     }
     .qr-code-section {
-        bottom: 85px;
+        bottom: 70px;
         right: 5px;
         transform: none;
         width: auto;
