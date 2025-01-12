@@ -32,8 +32,9 @@ const openai = new OpenAI({
 });
 
 // Serve static files from the correct directory
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/generated', express.static(path.join(__dirname, 'public', 'generated')));
+app.use(express.static('public'));
+app.use('/generated', express.static('public/generated'));
+app.use('/images', express.static('public/images'));
 app.use(express.json());
 
 // Add this middleware to properly serve static files with correct content type
@@ -109,16 +110,18 @@ generateQueue.on('task_finish', () => {
 // Add this function to check and create required directories
 async function ensureDirectories() {
     const dirs = [
-        path.join(__dirname, 'inspirational-ai-world-main', 'public', 'generated'),
-        path.join(__dirname, 'inspirational-ai-world-main', 'public', 'generated', 'archive')
+        'public',
+        'public/generated',
+        'public/images',
+        'public/js',
+        'public/css'
     ];
 
     for (const dir of dirs) {
         try {
-            await fs.access(dir);
-        } catch {
             await fs.mkdir(dir, { recursive: true });
-            console.log(`Created directory: ${dir}`);
+        } catch (err) {
+            console.log(`Directory ${dir} already exists or error:`, err);
         }
     }
 }
@@ -420,11 +423,9 @@ app.post('/api/initialize-coins', async (req, res) => {
 
 // Function to generate and save QR code
 async function generateQRCode() {
-    const qrCodePath = path.join(__dirname, 'inspirational-ai-world-main', 'public', 'images', 'bmc-qr.png');
-    const qrCodeDir = path.dirname(qrCodePath);
-    
+    const qrCodePath = path.join('public', 'images', 'bmc-qr.png');
     try {
-        await fs.mkdir(qrCodeDir, { recursive: true });
+        await fs.mkdir(path.dirname(qrCodePath), { recursive: true });
         await QRCode.toFile(qrCodePath, 'https://buymeacoffee.com/itiswhatitisai', {
             width: 300,
             margin: 2,
