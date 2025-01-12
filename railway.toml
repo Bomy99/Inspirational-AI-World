@@ -1,0 +1,15 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "npm install"
+nixpacks.nodejs.version = "18.x"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+
+[deploy.envs]
+NODE_ENV = "production"
+PORT = "3000"
+NIXPACKS_NODEJS_VERSION = "18" 
