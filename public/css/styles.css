@@ -160,4 +160,24 @@ h1 {
 
 .quote-display.visible {
     opacity: 1;
+}
+
+.stats-section {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    font-size: 0.9rem;
+    color: #888;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1000;
+}
+
+.stats-section p {
+    margin: 0;
 } 

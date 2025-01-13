@@ -291,11 +291,36 @@ async function processGenerateRequest(req, res) {
     }
 }
 
-// Update the endpoint to use the queue
+// Add these at the top level
+const uniqueVisitors = new Set();
+let totalGenerations = 0;
+
+// Try to load saved stats from a file
+try {
+    const stats = require('./stats.json');
+    totalGenerations = stats.totalGenerations || 0;
+} catch (error) {
+    console.log('No previous stats found, starting fresh');
+}
+
+// Add the stats endpoint here
+app.get('/api/stats', (req, res) => {
+    res.json({
+        uniqueVisitors: uniqueVisitors.size,
+        totalGenerations: totalGenerations
+    });
+});
+
+// Update the generate endpoint to track generations
 app.post('/api/generate', async (req, res) => {
     try {
+        totalGenerations++;
+        // Save stats periodically
+        fs.writeFile('stats.json', JSON.stringify({ totalGenerations }), 'utf8')
+            .catch(err => console.error('Error saving stats:', err));
+            
         const position = generateQueue.length;
-        const waitTime = position * 10; // 10 seconds per queued request
+        const waitTime = position * 10;
 
         // Send initial response with queue information
         if (position > 0) {

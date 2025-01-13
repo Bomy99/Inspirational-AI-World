@@ -220,6 +220,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateButtonStates();
+
+    async function updateStats() {
+        try {
+            const response = await fetch('/api/stats');
+            const data = await response.json();
+            document.getElementById('visitorCount').textContent = data.uniqueVisitors;
+            document.getElementById('generationCount').textContent = data.totalGenerations;
+            
+            // Save to localStorage as backup
+            localStorage.setItem('totalGenerations', data.totalGenerations);
+            localStorage.setItem('uniqueVisitors', data.uniqueVisitors);
+        } catch (error) {
+            // If server fetch fails, use localStorage data
+            const savedGenerations = localStorage.getItem('totalGenerations') || '-';
+            const savedVisitors = localStorage.getItem('uniqueVisitors') || '-';
+            document.getElementById('generationCount').textContent = savedGenerations;
+            document.getElementById('visitorCount').textContent = savedVisitors;
+            console.error('Error fetching stats:', error);
+        }
+    }
+
+    // Update stats every 30 seconds instead of every minute
+    setInterval(updateStats, 30000);
+    updateStats(); // Initial update
 });
 
 // Add payment success handler (you'll need to implement the webhook on your backend)
