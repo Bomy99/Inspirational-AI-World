@@ -14,55 +14,55 @@
             <h1>Inspirational AI-World</h1>
             <p class="subtitle">Where Technology Meets Inspiration</p>
         </header>
-        
-        <div class="stats-section">
-            <p>Visitors: <span id="visitorCount">-</span></p>
-            <p>Total Generations: <span id="generationCount">-</span></p>
+    </div>
+    
+    <div class="stats-section">
+        <p>👥 <span id="visitorCount">-</span></p>
+        <p>🎨 <span id="generationCount">-</span></p>
+    </div>
+    
+    <div class="quote-display"></div>
+    <img class="image-display" alt="Surprise Inspiration Image">
+    <button class="download-button">⬇️ Download Image</button>
+    
+    <div class="coffee-section">
+        <div class="coins-display">
+            <span class="coin-count">0</span>
+            <span class="coin-icon">🪙</span>
         </div>
-        
-        <div class="quote-display"></div>
-        <img class="image-display" alt="Surprise Inspiration Image">
-        <button class="download-button">⬇️ Download Image</button>
-        
-        <div class="coffee-section">
-            <div class="coins-display">
-                <span class="coin-count">0</span>
-                <span class="coin-icon">🪙</span>
+        <div class="coffee-buttons">
+            <div class="coffee-option">
+                <span>Small Coffee (4 coins)</span>
+                <button onclick="handlePaymentClick(1)" class="bmc-button">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=1€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
+                </button>
             </div>
-            <div class="coffee-buttons">
-                <div class="coffee-option">
-                    <span>Small Coffee (4 coins)</span>
-                    <button onclick="handlePaymentClick(1)" class="bmc-button">
-                        <img src="https://img.buymeacoffee.com/button-api/?text=1€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
-                    </button>
-                </div>
-                <div class="coffee-option">
-                    <span>Medium Coffee (15 coins)</span>
-                    <button onclick="handlePaymentClick(3)" class="bmc-button">
-                        <img src="https://img.buymeacoffee.com/button-api/?text=3€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
-                    </button>
-                </div>
-                <div class="coffee-option">
-                    <span>Big Coffee (30 coins)</span>
-                    <button onclick="handlePaymentClick(5)" class="bmc-button">
-                        <img src="https://img.buymeacoffee.com/button-api/?text=5€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
-                    </button>
-                </div>
+            <div class="coffee-option">
+                <span>Medium Coffee (15 coins)</span>
+                <button onclick="handlePaymentClick(3)" class="bmc-button">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=3€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
+                </button>
+            </div>
+            <div class="coffee-option">
+                <span>Big Coffee (30 coins)</span>
+                <button onclick="handlePaymentClick(5)" class="bmc-button">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=5€&emoji=☕&slug=itiswhatitisai&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" />
+                </button>
             </div>
         </div>
-        <div class="qr-code-section">
-            <img src="/images/bmc-qr.png" alt="Buy Me a Coffee QR Code">
-            <p>Scan to Support</p>
-        </div>
-        <div id="payment-modal" class="modal">
-            <div class="modal-content">
-                <h2>Need More Coins! ✨</h2>
-                <p>Each generation costs 1 coin. Support the project by buying me a coffee and get more coins!</p>
-                <p class="modal-subtitle">Small Coffee (1€) = 4 generations<br>
-                    Medium Coffee (3€) = 15 generations<br>
-                    Big Coffee (5€) = 30 generations</p>
-                <button class="close-modal">Close</button>
-            </div>
+    </div>
+    <div class="qr-code-section">
+        <img src="/images/bmc-qr.png" alt="Buy Me a Coffee QR Code">
+        <p>Scan to Support</p>
+    </div>
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h2>Need More Coins! ✨</h2>
+            <p>Each generation costs 1 coin. Support the project by buying me a coffee and get more coins!</p>
+            <p class="modal-subtitle">Small Coffee (1€) = 4 generations<br>
+                Medium Coffee (3€) = 15 generations<br>
+                Big Coffee (5€) = 30 generations</p>
+            <button class="close-modal">Close</button>
         </div>
     </div>
     
